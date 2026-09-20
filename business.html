@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Engineering </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="h100">
+        <img src="c:\Users\susho\Downloads\ChatGPT Image Sep 19, 2026, 01_08_45 AM.png" alt="Business Engineering logo">
+    </div>
+    <header class="site-header">
+        <a class="brand" href="business.html" aria-label="Business Engineering"><span>B E</span> Business  Engineering</a>
+        <nav aria-label="Main navigation">
+            <a href="#shop"><span aria-hidden="true">&#128722;</span> Shop</a>
+            <a href="#story"><span aria-hidden="true">&#9733;</span> Our story</a>
+            <a href="#contact"><span aria-hidden="true">&#9990;</span> 9800242492</a>
+        </nav>
+        <button class="cart-button" id="cartButton" type="button" aria-label="Open shopping cart">
+            Cart <span id="cartCount">0</span>
+        </button>
+    </header>
+
+    <main>
+        <section class="hero" id="story">
+            <div class="hero-copy">
+                <p class="eyebrow">Small rituals, made better</p>
+                <h1>Good things for the way you live.</h1>
+                <br>
+            
+                <a class="primary-button" href="#shop">Explore the collection <span aria-hidden="true">&#8594;</span></a>
+            </div>
+            <div class="hero-image">
+                <img src="https://images.pexels.com/photos/736230/pexels-photo-736230.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=600" alt="Warmly lit table with a ceramic vase and flowers" loading="eager">
+                <span class="hero-note">New season<br><strong>Quiet color</strong></span>
+            </div>
+        </section>
+
+        <section class="shop-section" id="shop">
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">The edit</p>
+                    <h2>Objects with a po                    https://sushovan123.github.io/my-website/business.html#shop                    https://sushovan123.github.io/my-website/#shop                    https://sushovan123.github.io/my-website/#shopint of view.</h2>
+                </div>
+                <p class="section-intro">Thoughtfully sourced pieces that earn their place in your home.</p>
+            </div>
+            <div class="shop-tools">
+                <label class="search-box"><span aria-hidden="true">&#9906;</span><input id="searchInput" type="search" placeholder="Search the collection" aria-label="Search products"></label>
+                <div class="filter-group" aria-label="Filter products">
+                    <button class="filter-button active" data-category="all" type="button">All</button>
+                    <button class="filter-button" data-category="home" type="button">Home</button>
+                    <button class="filter-button" data-category="garden" type="button">Garden</button>
+                </div>
+            </div>
+            <div class="product-list" id="productList"></div>
+            <p class="empty-state" id="emptyState" hidden>No pieces match that search.</p>
+        </section>
+    </main>
+
+    <footer id="contact">
+        <div><a class="brand" href="business.html"><span>B E</span> Business Engineering</a><p>Made for everyday beauty.</p></div>
+        <p>&copy; 2027 Business Engineering</p>
+    </footer>
+
+    <aside class="cart-drawer" id="cartDrawer" aria-label="Shopping cart" aria-hidden="true">
+        <div class="cart-header"><h2>Your cart</h2><button id="closeCart" type="button" aria-label="Close shopping cart">&times;</button></div>
+        <div id="cartItems" class="cart-items"></div>
+        <div class="cart-summary"><div><span>Subtotal</span><strong id="cartTotal">Rs. 0</strong></div><button class="primary-button checkout-button" type="button">Checkout <span aria-hidden="true">&#8594;</span></button></div>
+    </aside>
+    <div class="drawer-backdrop" id="drawerBackdrop"></div>
+
+    <script>
+        const products = [
+            { id: 1, name: 'Stoneware bud vase', category: 'home', price: 850, tag: 'Bestseller', image: 'c:\\Users\\susho\\Downloads\\ChatGPT Image Sep 19, 2026, 01_08_45 AM.png', alt: 'Close-up of a pink flower in a vase' },
+            { id: 2, name: 'Morning light print', category: 'home', price: 1200, tag: 'New', image: 'c:\\Users\\susho\\Downloads\\ChatGPT Image Sep 19, 2026, 01_08_45 AM.png', alt: 'Sunlit room with a chair and plants' },
+            { id: 3, name: 'Garden hand trowel', category: 'garden', price: 650, tag: '', image: 'c:\\Users\\susho\\Downloads\\ChatGPT Image Sep 19, 2026, 01_08_45 AM.png', alt: 'Gardening tools and a green plant' },
+            { id: 4, name: 'Linen market tote', category: 'home', price: 980, tag: 'Staff pick', image: 'c:\\Users\\susho\\Downloads\\ChatGPT Image Sep 19, 2026, 01_08_45 AM.png', alt: 'Natural linen bag on a wooden surface' }
+        ];
+        const cart = [];
+        const productList = document.getElementById('productList');
+        const cartItems = document.getElementById('cartItems');
+        const cartDrawer = document.getElementById('cartDrawer');
+        const backdrop = document.getElementById('drawerBackdrop');
+
+        const money = (value) => `Rs. ${value.toLocaleString('en-IN')}`;
+
+        function renderProducts() {
+            const term = document.getElementById('searchInput').value.toLowerCase().trim();
+            const category = document.querySelector('.filter-button.active').dataset.category;
+            const visible = products.filter((product) => (category === 'all' || product.category === category) && product.name.toLowerCase().includes(term));
+            productList.innerHTML = visible.map((product) => `
+                <article class="product-card">
+                    <div class="product-image"><img src="${product.image}" alt="${product.alt}" loading="lazy">${product.tag ? `<span class="product-tag">${product.tag}</span>` : ''}</div>
+                    <div class="product-details"><p class="product-category">${product.category}</p><h3>${product.name}</h3><div class="product-bottom"><strong>${money(product.price)}</strong><button class="add-button" type="button" data-id="${product.id}">Add <span aria-hidden="true">+</span></button></div></div>
+                </article>`).join('');
+            document.getElementById('emptyState').hidden = visible.length > 0;
+        }
+        
+
+        function renderCart() {
+            const itemCount = cart.reduce((total, item) => total + item.quantity, 0);
+            document.getElementById('cartCount').textContent = itemCount;
+            document.getElementById('cartTotal').textContent = money(cart.reduce((total, item) => total + item.price * item.quantity, 0));
+            cartItems.innerHTML = cart.length ? cart.map((item) => `<div class="cart-item"><img src="${item.image}" alt=""><div><h3>${item.name}</h3><p>${money(item.price)}</p><div class="quantity"><button type="button" data-change="-1" data-id="${item.id}" aria-label="Decrease quantity">-</button><span>${item.quantity}</span><button type="button" data-change="1" data-id="${item.id}" aria-label="Increase quantity">+</button></div></div></div>`).join('') : '<p class="cart-empty">Your cart is waiting for something lovely.</p>';
+        }
+
+        function openCart() { cartDrawer.classList.add('open'); backdrop.classList.add('visible'); cartDrawer.setAttribute('aria-hidden', 'false'); }
+        function closeCart() { cartDrawer.classList.remove('open'); backdrop.classList.remove('visible'); cartDrawer.setAttribute('aria-hidden', 'true'); }
+
+        productList.addEventListener('click', (event) => {
+            const button = event.target.closest('.add-button');
+            if (!button) return;
+            const product = products.find((item) => item.id === Number(button.dataset.id));
+            const existing = cart.find((item) => item.id === product.id);
+            existing ? existing.quantity++ : cart.push({ ...product, quantity: 1 });
+            renderCart();
+            openCart();
+        });
+        cartItems.addEventListener('click', (event) => { const button = event.target.closest('[data-change]'); if (!button) return; const item = cart.find((entry) => entry.id === Number(button.dataset.id)); item.quantity += Number(button.dataset.change); if (item.quantity <= 0) cart.splice(cart.indexOf(item), 1); renderCart(); });
+        document.getElementById('searchInput').addEventListener('input', renderProducts);
+        document.querySelectorAll('.filter-button').forEach((button) => button.addEventListener('click', () => { document.querySelector('.filter-button.active').classList.remove('active'); button.classList.add('active'); renderProducts(); }));
+        document.getElementById('cartButton').addEventListener('click', openCart);
+        document.getElementById('closeCart').addEventListener('click', closeCart);
+        backdrop.addEventListener('click', closeCart);
+        renderProducts();
+        renderCart();
+    </script>
+</body>
+</html>
